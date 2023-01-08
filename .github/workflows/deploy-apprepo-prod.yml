@@ -21,9 +21,17 @@ jobs:
       - name: build-image
         run: |
           docker-compose -f docker-compose.yaml build --no-cache --progress=plain
-          docker-compose -f docker-compose.yaml run "appimage" make all
+          docker-compose -f docker-compose.yaml run appimage make all
 
       - name: deploy
         run: |
 
-          docker-compose -f docker-compose.yaml run "appimage" /bin/sh -c '/root/bin/Apprepo.AppImage upload /root/`ls /root/ | grep AppImage | head -n 1` --version-description=`date +"%d-%m-%Y"` --version-name="${PROD_VERSION_NAME}" --version-token=${PROD_TOKEN}'
+          export TOKEN=${PROD_TOKEN}  
+          export VERSION_NAME=${PROD_VERSION_NAME}
+
+          docker-compose -f docker-compose.yaml run appimage /bin/sh -c \
+              '/root/bin/Apprepo.AppImage upload /root/`ls /root/ | grep AppImage | head -n 1` \
+                --version-description=`date +"%d-%m-%Y"` \
+                --version-name="${VERSION_NAME}" \
+                --version-token=${TOKEN}'
+

@@ -20,5 +20,8 @@ services:
         privileged: true
         build:
             context: app/docker
+            args:
+                TOKEN: ${TOKEN}
+                
         volumes:
             - ./app:/root:cached
