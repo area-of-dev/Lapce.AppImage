@@ -1,0 +1,42 @@
+name: Deploy the build to the apprepo (PROD)
+on:
+  push:
+    branches:
+      - main
+
+env:
+  DOCKER_BUILDKIT: 1
+  PROD_TOKEN: ${{ secrets.PROD_TOKEN }}
+  PROD_VERSION_DESCRIPTION: `date +"%d-%m-%Y"`
+  PROD_VERSION_NAME: "latest"
+
+jobs:
+  
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: build-image
+        run: |
+          docker-compose -f docker-compose.yaml build --no-cache --progress=plain
+          docker-compose -f docker-compose.yaml run "appimage" make all
+          
+      - name: setup deploy
+        run: |
+          mkdir ~/bin/
+
+          wget https://apprepo.de/appimage/download/apprepo \
+               --output-document=./bin/Apprepo.AppImage
+          chmod +x ./bin/Apprepo.AppImage
+
+      - name: deploy
+        run: |
+
+          ./bin/Apprepo.AppImage upload `pwd`/app/`ls ./app/ | grep AppImage | head -n 1` \
+              --version-description="${PROD_VERSION_DESCRIPTION}" \
+              --version-name="${PROD_VERSION_NAME}" \
+              --version-token=${PROD_TOKEN}   
