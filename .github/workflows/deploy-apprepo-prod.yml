@@ -24,18 +24,10 @@ jobs:
           docker-compose -f docker-compose.yaml build --no-cache --progress=plain
           docker-compose -f docker-compose.yaml run "appimage" make all
           
-      - name: setup deploy
-        run: |
-          mkdir ~/bin/
-
-          wget https://apprepo.de/appimage/download/apprepo \
-               --output-document=./bin/Apprepo.AppImage
-          chmod +x ./bin/Apprepo.AppImage
-
       - name: deploy
         run: |
 
-          ./bin/Apprepo.AppImage upload `pwd`/app/`ls ./app/ | grep AppImage | head -n 1` \
+          ./app/bin/Apprepo.AppImage upload `pwd`/app/`ls ./app/ | grep AppImage | head -n 1` \
               --version-description=`date +"%d-%m-%Y"` \
               --version-name="${PROD_VERSION_NAME}" \
               --version-token=${PROD_TOKEN}   
