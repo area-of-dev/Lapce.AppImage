@@ -21,10 +21,11 @@ jobs:
       - name: preparation
         run: |
 
+          mkdir --parents ./dist
           mkdir --parents ./app/.config/apprepo
+
           echo "[user]"                    >  ./app/.config/apprepo/default.conf
           echo "token = ${AUTHENTICATION}" >> ./app/.config/apprepo/default.conf
-
 
       - name: build
         run: |
@@ -37,4 +38,13 @@ jobs:
 
           docker-compose -f docker-compose.yaml run appimage /bin/sh -c \
               '/root/bin/Apprepo.AppImage upload /root/`ls /root/ | grep AppImage | head -n 1` --version-description=`date +"%d-%m-%Y"` --version-token=${TOKEN} --version-name="latest" --version-skip-check '
-                
+
+      - name: build artifact
+        run: |
+          cp --force ./app/*.AppImage ./dist/
+
+      - name: build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${GITHUB_REPOSITORY#*/}
+          path: "./dist/*.AppImage"
