@@ -38,5 +38,7 @@ jobs:
           docker-compose -f docker-compose.yaml run appimage /bin/sh -c \
               '/root/bin/Apprepo.AppImage upload /root/`ls /root/ | grep AppImage | head -n 1` \
                 --version-description=`date +"%d-%m-%Y"` \
+                --version-token=${TOKEN} \ 
                 --version-name="latest" \
-                --version-token=${TOKEN}'
+                --version-skip-check'
+                
