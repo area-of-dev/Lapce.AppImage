@@ -20,6 +20,10 @@ jobs:
 
       - name: build-image
         run: |
+
+          export TOKEN=${PROD_TOKEN}  
+          export VERSION_NAME=${PROD_VERSION_NAME}
+
           docker-compose -f docker-compose.yaml build --no-cache --progress=plain
           docker-compose -f docker-compose.yaml run appimage make all
 
