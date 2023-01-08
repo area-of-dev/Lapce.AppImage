@@ -15,13 +15,13 @@ services:
     appimage:
         cap_drop:
             - SYS_ADMIN
-        container_name: ${CID}
+        environment:
+            TOKEN: ${TOKEN}
         working_dir: /root
         privileged: true
         build:
             context: app/docker
             args:
                 TOKEN: ${TOKEN}
-                
         volumes:
             - ./app:/root:cached
