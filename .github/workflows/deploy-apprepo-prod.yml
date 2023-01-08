@@ -7,7 +7,6 @@ on:
 env:
   DOCKER_BUILDKIT: 1
   PROD_TOKEN: ${{ secrets.PROD_TOKEN }}
-  PROD_VERSION_DESCRIPTION: `date +"%d-%m-%Y"`
   PROD_VERSION_NAME: "latest"
 
 jobs:
@@ -37,6 +36,6 @@ jobs:
         run: |
 
           ./bin/Apprepo.AppImage upload `pwd`/app/`ls ./app/ | grep AppImage | head -n 1` \
-              --version-description="${PROD_VERSION_DESCRIPTION}" \
+              --version-description=`date +"%d-%m-%Y"` \
               --version-name="${PROD_VERSION_NAME}" \
               --version-token=${PROD_TOKEN}   
