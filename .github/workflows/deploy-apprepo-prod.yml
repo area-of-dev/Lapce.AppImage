@@ -6,8 +6,8 @@ on:
 
 env:
   DOCKER_BUILDKIT: 1
+  AUTHENTICATION: "${{ secrets.PROD_AUTHENTICATION }}"
   TOKEN: "${{ secrets.PROD_TOKEN }}"
-  VERSION_NAME: "latest"
 
 jobs:
   deploy:
@@ -21,22 +21,21 @@ jobs:
       - name: build-image
         run: |
 
-          export TOKEN=${PROD_TOKEN}  
-          export VERSION_NAME=${PROD_VERSION_NAME}
-
           docker-compose -f docker-compose.yaml build --no-cache --progress=plain
           docker-compose -f docker-compose.yaml run appimage make all
+
+      - name: deploy preparation
+        run: |
+
+          mkdir --parents app/.config/
+          echo "[user]"                    > ./app/.config/apprepo/default.conf
+          echo "token = ${AUTHENTICATION}" > ./app/.config/apprepo/default.conf
 
       - name: deploy
         run: |
 
           docker-compose -f docker-compose.yaml run appimage /bin/sh -c \
-              'echo /root/`ls /root/ | grep AppImage | head -n 1` \
-                --version-description=`date +"%d-%m-%Y"` \
-                --version-name="${VERSION_NAME}"'
-
-          docker-compose -f docker-compose.yaml run appimage /bin/sh -c \
               '/root/bin/Apprepo.AppImage upload /root/`ls /root/ | grep AppImage | head -n 1` \
                 --version-description=`date +"%d-%m-%Y"` \
-                --version-name="${VERSION_NAME}" \
+                --version-name="latest" \
                 --version-token=${TOKEN}'
