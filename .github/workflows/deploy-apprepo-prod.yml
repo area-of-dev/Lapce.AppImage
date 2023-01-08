@@ -21,7 +21,7 @@ jobs:
       - name: preparation
         run: |
 
-          mkdir --parents app/.config/
+          mkdir --parents ./app/.config/apprepo
           echo "[user]"                    >  ./app/.config/apprepo/default.conf
           echo "token = ${AUTHENTICATION}" >> ./app/.config/apprepo/default.conf
 
