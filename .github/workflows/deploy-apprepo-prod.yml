@@ -18,18 +18,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: build-image
-        run: |
-
-          docker-compose -f docker-compose.yaml build --no-cache --progress=plain
-          docker-compose -f docker-compose.yaml run appimage make all
-
-      - name: deploy preparation
+      - name: preparation
         run: |
 
           mkdir --parents app/.config/
           echo "[user]"                    >  ./app/.config/apprepo/default.conf
           echo "token = ${AUTHENTICATION}" >> ./app/.config/apprepo/default.conf
+
+
+      - name: build
+        run: |
+
+          docker-compose -f docker-compose.yaml build --no-cache --progress=plain
+          docker-compose -f docker-compose.yaml run appimage make all
 
       - name: deploy
         run: |
