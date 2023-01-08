@@ -19,8 +19,10 @@ services:
             context: app/docker
             args:
                 TOKEN: ${TOKEN}
+                VERSION_NAME: ${VERSION_NAME}
         environment:
             TOKEN: ${TOKEN}
+            VERSION_NAME: ${VERSION_NAME}
         cap_drop:
             - SYS_ADMIN
         volumes:

@@ -12,7 +12,9 @@
 FROM ubuntu:20.04
 
 ARG TOKEN
+ARG VERSION_NAME
 ENV TOKEN=${TOKEN}
+ENV VERSION_NAME=${VERSION_NAME}
 
 ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
