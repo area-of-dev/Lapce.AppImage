@@ -27,4 +27,4 @@ jobs:
         run: |
 
           docker-compose -f docker-compose.yaml run "appimage" /bin/sh -c \
-              '/root/bin/Apprepo.AppImage upload /root/`ls /root/ | grep AppImage | head -n 1` --version-description=`date +"%d-%m-%Y"` --version-name="${PROD_VERSION_NAME}" --version-token=${PROD_TOKEN}'
+              '/root/bin/Apprepo.AppImage upload /root/`ls /root/ | grep AppImage | head -n 1` --version-description=`date +"%d-%m-%Y"` --version-name="$${PROD_VERSION_NAME}" --version-token=$${PROD_TOKEN}'
