@@ -28,6 +28,8 @@ jobs:
 
           echo "[user]"                    >  ./app/.config/apprepo/default.conf
           echo "token = ${AUTHENTICATION}" >> ./app/.config/apprepo/default.conf
+          
+          echo "${{ github.event.repository.name }}"
 
       - name: build
         run: |
@@ -48,5 +50,5 @@ jobs:
       - name: build artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ${PACKAGE}
+          name: ${{ github.event.repository.name }}
           path: "./dist/*.AppImage"
