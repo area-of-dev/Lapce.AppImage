@@ -55,15 +55,13 @@ jobs:
           path: "./dist/*.AppImage"
 
 
-      - name: create nightly release
-        uses: viperproject/create-nightly-release@v1
+      - name: release latest build
+        uses: andelf/nightly-release@main
         env:
-           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: latest
-          release_name: latest
-          body: latest build
-          keep_num: 0
-          keep_tags: false
-          
-
+          name: '$$ latest build'
+          prerelease: true
+          files: |
+            path: "./dist/*.AppImage"
