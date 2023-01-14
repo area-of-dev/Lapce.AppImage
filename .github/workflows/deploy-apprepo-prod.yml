@@ -51,6 +51,7 @@ jobs:
         with:
           tag_name: latest
           name: ${{ github.event.repository.name }} latest build'
+          body: 'This repo provides the AppImage build only. To get the application release notes please visit the home page of the app itself.'
           prerelease: true
           files: |
             ./app/*.AppImage
