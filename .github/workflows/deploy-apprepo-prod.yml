@@ -53,3 +53,17 @@ jobs:
         with:
           name: ${{ github.event.repository.name }}
           path: "./dist/*.AppImage"
+
+
+      - name: create nightly release
+        uses: viperproject/create-nightly-release@v1
+        env:
+           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: latest
+          release_name: latest
+          body: latest build
+          keep_num: 0
+          keep_tags: false
+          
+
